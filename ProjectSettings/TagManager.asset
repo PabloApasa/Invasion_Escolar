@@ -6,6 +6,7 @@ TagManager:
   tags:
   - ZonaRescate
   - Obstaculos
+  - Enemigo
   layers:
   - Default
   - TransparentFX
