@@ -7,6 +7,10 @@ TagManager:
   - ZonaRescate
   - Obstaculos
   - Enemigo
+<<<<<<< Updated upstream
+=======
+  - ProyectilEnemigo
+>>>>>>> Stashed changes
   layers:
   - Default
   - TransparentFX
