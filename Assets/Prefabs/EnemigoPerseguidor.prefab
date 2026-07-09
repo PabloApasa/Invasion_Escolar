@@ -61,8 +61,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.1673512, y: -1.3792579, z: 0.07242504}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.78, y: 0.78, z: 0.78}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3097972462616704152}
   m_Father: {fileID: 0}
@@ -79,12 +79,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83ea0f79de90ebd4aaa99afcb48e5d1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocidadMax: 3.5
+  velocidadMax: 3.9
   fuerzaGiroMax: 5
-  longitudSensor: 1.5
+  longitudSensor: 1.68
   capaObstaculos:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   spriteRenderer: {fileID: 6461660088255376150}
   spriteFrente: {fileID: -6362258271221024332, guid: ae87b24cff718c44ca43a9eb1c6827da, type: 3}
   spriteEspalda: {fileID: -418641536536137715, guid: ae87b24cff718c44ca43a9eb1c6827da, type: 3}
@@ -115,7 +115,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &3678438149084277685
 BoxCollider2D:
   m_ObjectHideFlags: 0
