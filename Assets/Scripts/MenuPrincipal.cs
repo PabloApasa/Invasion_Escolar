@@ -58,12 +58,12 @@ public class MenuPrincipal : MonoBehaviour
     }
     public void CambiarNivel1()
     {
-        SceneManager.LoadScene("Nivel_1");
+        SceneManager.LoadScene("NIvel-01");
     }
 
     public void CambiarNivel2()
     {
-        SceneManager.LoadScene("Nivel_2");
+        SceneManager.LoadScene("NIvel-02");
     }
     public void PlaySoundButton()
     {

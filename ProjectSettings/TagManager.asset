@@ -5,17 +5,14 @@ TagManager:
   serializedVersion: 3
   tags:
   - ZonaRescate
-  - Obstaculos
   - Enemigo
-<<<<<<< Updated upstream
-=======
   - ProyectilEnemigo
->>>>>>> Stashed changes
+  - Rehen
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Obstaculos
+  - 
   - Water
   - UI
   - 

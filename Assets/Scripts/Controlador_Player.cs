@@ -8,12 +8,14 @@ public class JugadorTopDown : MonoBehaviour
 
     [Header("Efectos Visuales")]
     [SerializeField] private SpriteRenderer spriteRenderer;
-    // Aquí pondremos los sprites correspondientes a cada dirección
     [SerializeField] private Sprite spriteFrente;
     [SerializeField] private Sprite spriteEspalda;
-    [SerializeField] private Sprite spritePerfil; // El de un costado (normalmente mirando a la derecha)
+    [SerializeField] private Sprite spritePerfil;
 
-    // Componentes internos
+    [Header("Sistema de Daño")]
+    [SerializeField] private float tiempoInmunidad = 1.5f; // Segundos que es invencible tras un golpe
+    private float temporizadorInmunidad;
+
     private Rigidbody2D rb;
 
     private void Awake()
@@ -24,43 +26,49 @@ public class JugadorTopDown : MonoBehaviour
 
     private void Update()
     {
-        // 1. Capturar la entrada en dos ejes (X para lados, Y para arriba/abajo)
+        // Movimiento e Inputs
         movimiento.x = Input.GetAxisRaw("Horizontal");
         movimiento.y = Input.GetAxisRaw("Vertical");
 
-        // Normalizamos el vector para que no camine más rápido cuando va en diagonal
         if (movimiento.magnitude > 1)
         {
             movimiento.Normalize();
         }
 
-        // 2. Controlar qué Sprite mostrar según la dirección
         CambiarSpriteSegunDireccion();
+
+        // Temporizador de Inmunidad
+        if (temporizadorInmunidad > 0)
+        {
+            temporizadorInmunidad -= Time.deltaTime;
+
+            // Efecto visual de parpadeo para indicar que es invencible
+            spriteRenderer.color = (Mathf.Sin(Time.time * 20) > 0) ? new Color(1, 0.5f, 0.5f, 0.5f) : Color.white;
+        }
+        else
+        {
+            spriteRenderer.color = Color.white; // Vuelve a la normalidad
+        }
     }
 
     private void FixedUpdate()
     {
-        // 3. Aplicar el movimiento directamente a las físicas (sin gravedad)
         rb.linearVelocity = movimiento * velocidad;
     }
 
     private void CambiarSpriteSegunDireccion()
     {
-        // Si se mueve hacia arriba (se va de espalda)
         if (movimiento.y > 0)
         {
             spriteRenderer.sprite = spriteEspalda;
         }
-        // Si se mueve hacia abajo (viene de frente, se le ve el rostro)
         else if (movimiento.y < 0)
         {
             spriteRenderer.sprite = spriteFrente;
         }
-        // Si se mueve hacia los lados
         else if (movimiento.x != 0)
         {
             spriteRenderer.sprite = spritePerfil;
-            // Volteamos el sprite horizontalmente si va a la izquierda
             spriteRenderer.flipX = (movimiento.x < 0);
         }
     }
@@ -71,15 +79,33 @@ public class JugadorTopDown : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        // Cuando toca a un enemigo...
         if (collision.gameObject.CompareTag("Enemigo"))
         {
-            RecibirDanio(20f); // Le avisa al GameManager para restar vida
+            RecibirDanio(20f);
+        }
+    }
+
+    // Si el enemigo se queda pegado, lo sigue atacando cada vez que se acaba la inmunidad
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemigo"))
+        {
+            RecibirDanio(20f);
         }
     }
 
     public void RecibirDanio(float cantidad)
     {
-        Debug.Log("¡El jugador recibió daño!");
+        // Si el jugador es inmune, ignoramos el daño
+        if (temporizadorInmunidad > 0) return;
+
+        Debug.Log("¡El jugador recibió " + cantidad + " de daño!");
+
+        // Restamos vida en el GameManager
         GameManager.Instance.ModificarVida(-cantidad);
+
+        // Activamos la inmunidad temporal
+        temporizadorInmunidad = tiempoInmunidad;
     }
 }
