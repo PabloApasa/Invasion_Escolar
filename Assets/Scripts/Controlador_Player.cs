@@ -6,11 +6,8 @@ public class JugadorTopDown : MonoBehaviour
     [SerializeField] private float velocidad = 5f;
     private Vector2 movimiento;
 
-    [Header("Efectos Visuales")]
+    [Header("Componentes Visuales")]
     [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private Sprite spriteFrente;
-    [SerializeField] private Sprite spriteEspalda;
-    [SerializeField] private Sprite spritePerfil;
 
     [Header("Sistema de Daño")]
     [SerializeField] private float tiempoInmunidad = 1.5f; // Segundos que es invencible tras un golpe
@@ -35,7 +32,7 @@ public class JugadorTopDown : MonoBehaviour
             movimiento.Normalize();
         }
 
-        CambiarSpriteSegunDireccion();
+        Animacion_Player.UpdateMovementAnimation(movimiento);
 
         // Temporizador de Inmunidad
         if (temporizadorInmunidad > 0)
@@ -54,23 +51,6 @@ public class JugadorTopDown : MonoBehaviour
     private void FixedUpdate()
     {
         rb.linearVelocity = movimiento * velocidad;
-    }
-
-    private void CambiarSpriteSegunDireccion()
-    {
-        if (movimiento.y > 0)
-        {
-            spriteRenderer.sprite = spriteEspalda;
-        }
-        else if (movimiento.y < 0)
-        {
-            spriteRenderer.sprite = spriteFrente;
-        }
-        else if (movimiento.x != 0)
-        {
-            spriteRenderer.sprite = spritePerfil;
-            spriteRenderer.flipX = (movimiento.x < 0);
-        }
     }
 
     // ==========================================
