@@ -84,7 +84,7 @@ MonoBehaviour:
   longitudSensor: 1.5
   capaObstaculos:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 0
   spriteRenderer: {fileID: 6461660088255376150}
   spriteFrente: {fileID: -6362258271221024332, guid: ae87b24cff718c44ca43a9eb1c6827da, type: 3}
   spriteEspalda: {fileID: -418641536536137715, guid: ae87b24cff718c44ca43a9eb1c6827da, type: 3}
