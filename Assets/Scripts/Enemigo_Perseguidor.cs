@@ -114,28 +114,18 @@ public class EnemigoPerseguidor : MonoBehaviour
 
     private void BuscarNuevoObjetivo()
     {
-        // Busca todas las personas/rehenes en la escena
-        RehenTopDown[] rehenes = FindObjectsByType<RehenTopDown>(FindObjectsSortMode.None);
+        // Buscamos directamente al jugador usando su etiqueta
+        GameObject jugadorObj = GameObject.FindGameObjectWithTag("Player");
 
-        float distanciaMasCercana = Mathf.Infinity;
-        RehenTopDown rehenMasCercano = null;
-
-        foreach (RehenTopDown rehen in rehenes)
+        if (jugadorObj != null && jugadorObj.activeInHierarchy)
         {
-            if (rehen.gameObject.activeInHierarchy)
-            {
-                float distancia = Vector2.Distance(transform.position, rehen.transform.position);
-                if (distancia < distanciaMasCercana)
-                {
-                    distanciaMasCercana = distancia;
-                    rehenMasCercano = rehen;
-                }
-            }
+            // Aunque la variable se llame "objetivoRehen", ahora guardará al Jugador
+            objetivoRehen = jugadorObj.transform;
         }
-
-        if (rehenMasCercano != null)
+        else
         {
-            objetivoRehen = rehenMasCercano.transform;
+            // Si el jugador muere o es destruido, el enemigo se queda quieto
+            objetivoRehen = null;
         }
     }
 

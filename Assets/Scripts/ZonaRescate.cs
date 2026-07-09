@@ -7,7 +7,7 @@ public class ZonaRescate : MonoBehaviour
     public int rehenesRescatados = 0;
 
     [Header("UI Canvas")]
-    public TextMeshProUGUI textoContador; 
+    public TextMeshProUGUI textoContador;
 
     void Start()
     {
@@ -19,12 +19,15 @@ public class ZonaRescate : MonoBehaviour
         if (collision.CompareTag("Rehen"))
         {
             rehenesRescatados++;
+            ActualizarTexto();
 
-            ActualizarTexto();   
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.SalvarPersona();
+            }
 
-    
-
-            Destroy(collision.gameObject); 
+            // Destruimos al rehén al final
+            Destroy(collision.gameObject);
         }
     }
 
@@ -32,7 +35,6 @@ public class ZonaRescate : MonoBehaviour
     {
         if (textoContador != null)
         {
-
             textoContador.text = "Rehenes Salvados: " + rehenesRescatados;
         }
     }
