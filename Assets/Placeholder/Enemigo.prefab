@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2055457351555742515}
   - component: {fileID: 2107860226492152144}
   - component: {fileID: 7748663775498411655}
+  - component: {fileID: 1929520314532970721}
   m_Layer: 0
   m_Name: Enemigo
   m_TagString: Enemigo
@@ -126,7 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faf2f6e89aaf85345a7b220bf62b2ac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabBala: {fileID: 5798062836783050557, guid: 11b1178ad065bcb4797b17f1f57ce60f, type: 3}
+  prefabBala: {fileID: 2395976829595891541, guid: d489da02b94e1074ca97de4dd7463e8b, type: 3}
   puntoDeDisparo: {fileID: 6312907350282649243}
   cadenciaDeDisparo: 2
 --- !u!50 &2107860226492152144
@@ -193,6 +194,19 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.54, y: 0.62}
   m_Direction: 0
+--- !u!114 &1929520314532970721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4329634756488611501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dfaa23a57ff87e47b3eada57471845b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  impactosMaximos: 3
 --- !u!1 &6314501692767062472
 GameObject:
   m_ObjectHideFlags: 0

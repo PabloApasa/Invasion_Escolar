@@ -55,7 +55,7 @@ public class DisparoEnemigo : MonoBehaviour
         GameObject nuevaBala = Instantiate(prefabBala, origen, Quaternion.identity);
 
         // 4. Le pasamos la dirección al script Bala2D
-        Bala2D scriptBala = nuevaBala.GetComponent<Bala2D>();
+        Bala2DEnemigo scriptBala = nuevaBala.GetComponent<Bala2DEnemigo>();
         if (scriptBala != null)
         {
             scriptBala.DispararHacia(direccion);

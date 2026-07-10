@@ -1,15 +1,25 @@
 using UnityEngine;
-using System.Collections;
 
 public class SistemaDisparo : MonoBehaviour
 {
     [Header("Configuración del Arma")]
-    public GameObject prefabBala;    // Arrastra aquí el Prefab de tu bala
-    public Transform puntoDeDisparo; // De dónde sale la bala (opcional)
+    [SerializeField] private GameObject prefabBala;
+    [SerializeField] private Transform puntoDeDisparo;
+
+    private OrientarPuntoDisparo orientador;
+
+    void Awake()
+    {
+        // Buscamos el componente de orientación automática en el punto de disparo
+        if (puntoDeDisparo != null)
+        {
+            orientador = puntoDeDisparo.GetComponent<OrientarPuntoDisparo>();
+        }
+    }
 
     void Update()
     {
-        // 0 es el clic izquierdo del mouse
+        // Mantenemos tu detección de disparo (Clic izquierdo del mouse)
         if (Input.GetMouseButtonDown(0))
         {
             EjecutarDisparo();
@@ -20,24 +30,37 @@ public class SistemaDisparo : MonoBehaviour
     {
         if (prefabBala == null) return;
 
-        // 1. Convertimos la posición del mouse de píxeles a coordenadas del juego
-        Vector3 posicionMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        posicionMouse.z = 0f; // Aseguramos que estamos en 2D
-
-        // 2. Definimos de dónde sale la bala
+        // 1. Definimos el origen exacto del disparo
         Vector3 origen = puntoDeDisparo != null ? puntoDeDisparo.position : transform.position;
 
-        // 3. Calculamos la dirección (Destino - Origen) y la normalizamos (longitud 1)
-        Vector2 direccion = ((Vector2)posicionMouse - (Vector2)origen).normalized;
+        // 2. MATEMÁTICA: Si el orientador encontró un enemigo, usamos esa dirección. 
+        // Si no, recurre a tu cálculo original por Mouse.
+        Vector2 direccion;
+        if (orientador != null)
+        {
+            direccion = orientador.DireccionObjetivo;
+        }
+        else
+        {
+            Vector3 posicionMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            posicionMouse.z = 0f;
+            direccion = ((Vector2)posicionMouse - (Vector2)origen).normalized;
+        }
 
-        // 4. Creamos la bala en la escena
+        // 3. Creamos la bala en la escena
         GameObject nuevaBala = Instantiate(prefabBala, origen, Quaternion.identity);
 
-        // 5. Buscamos el script de la bala y le pasamos la dirección
+        // 4. Pasamos la dirección al script de la bala física
         Bala2D scriptBala = nuevaBala.GetComponent<Bala2D>();
         if (scriptBala != null)
         {
             scriptBala.DispararHacia(direccion);
+        }
+        else
+        {
+            // Soporte directo por si usas físicas Rigidbody2D nativas
+            Rigidbody2D rbBala = nuevaBala.GetComponent<Rigidbody2D>();
+            if (rbBala != null) rbBala.linearVelocity = direccion * 15f;
         }
     }
 }
