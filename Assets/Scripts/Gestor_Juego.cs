@@ -5,11 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    // Singleton para acceder al GameManager desde cualquier otro script fácilmente
     public static GameManager Instance { get; private set; }
 
     [Header("Configuración del Temporizador")]
-    [SerializeField] private float tiempoRestante = 120f; // 2 minutos (120 segundos)
+    [SerializeField] private float tiempoRestante = 120f;
     [SerializeField] private TextMeshProUGUI textoTemporizador;
 
     [Header("Configuración de Condiciones")]
@@ -20,17 +19,17 @@ public class GameManager : MonoBehaviour
     [Header("Configuración del Jugador (Vida)")]
     [SerializeField] private float vidaMaxima = 100f;
     private float vidaActual;
-    [SerializeField] private Slider barraVida; // Barra de vida clásica (UI Slider)
+    [SerializeField] private Slider barraVida;
 
     [Header("Paneles de Estado (UI)")]
     [SerializeField] private GameObject panelVictoria;
     [SerializeField] private GameObject panelDerrota;
+    [SerializeField] private GameObject panelInicio;
 
     private bool juegoTerminado = false;
 
     private void Awake()
     {
-        // Asegurar que solo exista un GameManager
         if (Instance == null) { Instance = this; }
         else { Destroy(gameObject); }
     }
@@ -40,9 +39,18 @@ public class GameManager : MonoBehaviour
         vidaActual = vidaMaxima;
         ActualizarUI();
 
-        // Desactivar paneles al iniciar el nivel
         if (panelVictoria) panelVictoria.SetActive(false);
         if (panelDerrota) panelDerrota.SetActive(false);
+
+        if (panelInicio != null)
+        {
+            panelInicio.SetActive(true);
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            Time.timeScale = 1f;
+        }
     }
 
     private void Update()
@@ -50,6 +58,15 @@ public class GameManager : MonoBehaviour
         if (juegoTerminado) return;
 
         ManejarTemporizador();
+    }
+
+    public void ComenzarJuego()
+    {
+        if (panelInicio != null)
+        {
+            panelInicio.SetActive(false);
+        }
+        Time.timeScale = 1f;
     }
 
     private void ManejarTemporizador()
@@ -75,7 +92,6 @@ public class GameManager : MonoBehaviour
         textoTemporizador.text = string.Format("{0:00}:{1:00}", minutos, segundos);
     }
 
-    // Método público para aplicar daño (valores negativos) o curación (valores positivos)
     public void ModificarVida(float cantidad)
     {
         if (juegoTerminado) return;
@@ -89,7 +105,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Llama a esto desde el script de tus enemigos cuando mueran
     public void EliminarEnemigo()
     {
         if (juegoTerminado) return;
@@ -98,7 +113,6 @@ public class GameManager : MonoBehaviour
         VerificarCondicionesVictoria();
     }
 
-    // Llama a esto desde el script de las personas cuando las salves
     public void SalvarPersona()
     {
         if (juegoTerminado) return;
@@ -110,7 +124,6 @@ public class GameManager : MonoBehaviour
 
     private void VerificarCondicionesVictoria()
     {
-        // Condición: Si eliminas a todos los enemigos O salvas a todas las personas -> Victoria
         if (enemigosTotales <= 0 || personasPorSalvar <= 0)
         {
             ProvocarVictoria();
@@ -132,7 +145,7 @@ public class GameManager : MonoBehaviour
     private void ProvocarVictoria()
     {
         juegoTerminado = true;
-        Time.timeScale = 0f; // Detiene el paso del tiempo, físicas y lógicas del juego
+        Time.timeScale = 0f;
         if (panelVictoria) panelVictoria.SetActive(true);
         Debug.Log("¡Victoria!");
     }
@@ -140,21 +153,17 @@ public class GameManager : MonoBehaviour
     private void ProvocarDerrota()
     {
         juegoTerminado = true;
-        Time.timeScale = 0f; // Detiene el juego
+        Time.timeScale = 0f;
         if (panelDerrota) panelDerrota.SetActive(true);
         Debug.Log("¡Perdiste!");
     }
 
-    // Función útil para conectar a un botón de "Reintentar" en tu panel de derrota/victoria
     public void ReiniciarNivel()
     {
-        Time.timeScale = 1f; // MUY IMPORTANTE restablecer el tiempo antes de recargar
+        Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    // ====================================================================
-    // FUNCIÓN EXTRA: Permite al Generador de Enemigos leer la cantidad
-    // ====================================================================
     public int GetEnemigosTotales()
     {
         return enemigosTotales;
