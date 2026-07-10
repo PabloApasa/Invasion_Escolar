@@ -9,6 +9,7 @@ TagManager:
   - ProyectilEnemigo
   - Rehen
   - Obsacutlo muebles
+  - Escudo
   layers:
   - Default
   - TransparentFX
