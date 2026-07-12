@@ -9,7 +9,7 @@ public class DialogoInicio : MonoBehaviour
     [TextArea(3, 5)] // Esto hace que la caja de texto en Unity sea más grande para escribir cómodo
     public string[] lineasDeDialogo; // Lista con todas las páginas de tu historia
 
-    private int indiceActual = 0;
+    private int indiceActual = 0;// Índice para saber qué línea de diálogo estamos mostrando
 
     void Start()
     {
