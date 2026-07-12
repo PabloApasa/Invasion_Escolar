@@ -1,7 +1,8 @@
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro; // Es el estándar de texto en Unity 6
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -25,6 +26,13 @@ public class GameManager : MonoBehaviour
     [Header("Paneles de Estado (UI)")]
     [SerializeField] private GameObject panelVictoria;
     [SerializeField] private GameObject panelDerrota;
+    [SerializeField] private GameObject panelInicio; // NUEVO: Panel de historia/instrucciones
+    [SerializeField] private GameObject panelPausa;
+
+    [Header("Configuración de Sonido")]
+    public Slider volumen;
+    public Slider FXvolumen;
+    public AudioMixer mixer;
 
     private bool juegoTerminado = false;
 
@@ -43,6 +51,35 @@ public class GameManager : MonoBehaviour
         // Desactivar paneles al iniciar el nivel
         if (panelVictoria) panelVictoria.SetActive(false);
         if (panelDerrota) panelDerrota.SetActive(false);
+
+        // Mostrar el panel de inicio y pausar el juego
+        if (panelInicio != null)
+        {
+            panelInicio.SetActive(true);
+            Time.timeScale = 0f; // Congela todo el juego
+        }
+        else
+        {
+            Time.timeScale = 1f; // Por si acaso no asignas un panel, el juego fluye normal
+        }
+
+        // ==========================================
+        // CARGAR EL VOLUMEN GUARDADO EN EL MIXER
+        // ==========================================
+        // Nota: Asumimos 0f por defecto porque el AudioMixer suele usar decibelios (0 es el máximo normal)
+        float masterGuardado = PlayerPrefs.GetFloat("VolMasterGuardado", 0f);
+        float fxGuardado = PlayerPrefs.GetFloat("VolFXGuardado", 0f);
+
+        // Actualizamos los Sliders visuales
+        if (volumen != null) volumen.value = masterGuardado;
+        if (FXvolumen != null) FXvolumen.value = fxGuardado;
+
+        // Actualizamos el Mixer
+        if (mixer != null)
+        {
+            mixer.SetFloat("VolMaster", masterGuardado);
+            mixer.SetFloat("VolFX", fxGuardado);
+        }
     }
 
     private void Update()
@@ -50,6 +87,41 @@ public class GameManager : MonoBehaviour
         if (juegoTerminado) return;
 
         ManejarTemporizador();
+    }
+
+    // El script DialogoInicio llamará a esta función al terminar de leer
+    public void ComenzarJuego()
+    {
+        if (panelInicio != null)
+        {
+            panelInicio.SetActive(false); // Oculta el panel
+        }
+        Time.timeScale = 1f; // Descongela el juego y arranca la acción
+    }
+
+    public void Nivel02()
+    {
+        SceneManager.LoadScene("Nivel-02");
+    }
+
+    public void VolverMenu()
+    {
+        SceneManager.LoadScene("Menu");
+    }
+
+    // ==========================================
+    // FUNCIONES DE VOLUMEN CON GUARDADO
+    // ==========================================
+    public void ChangeVolumenMaster(float v)
+    {
+        if (mixer != null) mixer.SetFloat("VolMaster", v);
+        PlayerPrefs.SetFloat("VolMasterGuardado", v); // ¡Se guarda en memoria!
+    }
+
+    public void ChangeVolumenFX(float v)
+    {
+        if (mixer != null) mixer.SetFloat("VolFX", v);
+        PlayerPrefs.SetFloat("VolFXGuardado", v); // ¡Se guarda en memoria!
     }
 
     private void ManejarTemporizador()
