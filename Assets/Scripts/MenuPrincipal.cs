@@ -75,10 +75,7 @@ public class MenuPrincipal : MonoBehaviour
 
     public void OpenPanel(GameObject panel)
     {
-        mainPanel.SetActive(false);
-        optionPanel.SetActive(false);
         PlaySoundButton();
-        panel.SetActive(true);
     }
 
     public void ChangeVolumenMaster(float v)
@@ -114,5 +111,26 @@ public class MenuPrincipal : MonoBehaviour
     public void PlaySoundButton()
     {
         fxSource.PlayOneShot(clickSound);
+    }
+
+    public void mainMenu()
+    {
+        mainPanel.SetActive(true);
+        optionPanel.SetActive(false);
+        playPanel.SetActive(false);
+    }
+
+    public void optionMenu()
+    {
+        mainPanel.SetActive(false);
+        optionPanel.SetActive(true);
+        playPanel.SetActive(false);
+    }
+
+    public void playMenu()
+    {
+        mainPanel.SetActive(false);
+        optionPanel.SetActive(false);
+        playPanel.SetActive(true);
     }
 }
