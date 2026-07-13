@@ -109,6 +109,11 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("Menu");
     }
 
+    public void SalirJuego()
+    {
+        Application.Quit();
+    }
+
     // ==========================================
     // FUNCIONES DE VOLUMEN CON GUARDADO
     // ==========================================
