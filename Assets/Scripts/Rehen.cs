@@ -12,6 +12,7 @@ public class Rehen : MonoBehaviour
 
     private Transform jugador;
     private bool estaSiguiendo = false;
+    private Animator animator;
 
     void Start()
     {
@@ -22,6 +23,7 @@ public class Rehen : MonoBehaviour
         {
             jugador = objJugador.transform;
         }
+        animator = GetComponent<Animator>(); // inicializar Animator
     }
 
     void Update()
@@ -39,6 +41,7 @@ public class Rehen : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     estaSiguiendo = true;
+                    animator.SetBool("isFollowing", true); // activa animaciones
                     if (iconoBoton != null) iconoBoton.SetActive(false);
                 }
             }
@@ -51,8 +54,19 @@ public class Rehen : MonoBehaviour
         {
             if (distanciaAlJugador > distanciaDeParada)
             {
+                Vector2 direccion = (jugador.position - transform.position).normalized;
                 transform.position = Vector2.MoveTowards(transform.position, jugador.position, velocidadSeguimiento * Time.deltaTime);
+
+                animator.SetBool("isMoving", true);
+                animator.SetFloat("velX", direccion.x);
+                animator.SetFloat("velY", direccion.y);
             }
+            else
+            {
+                animator.SetBool("isMoving", false);
+                
+            }
+
         }
     }
 
