@@ -6,6 +6,10 @@ public class SistemaDisparo : MonoBehaviour
     [SerializeField] private GameObject prefabBala;
     [SerializeField] private Transform puntoDeDisparo;
 
+    [Header("Efectos de Sonido")]
+    [SerializeField] private AudioClip sonidoDisparo; // Aquí arrastrarás tu archivo de audio
+    private AudioSource audioSource;
+
     private OrientarPuntoDisparo orientador;
 
     void Awake()
@@ -15,6 +19,9 @@ public class SistemaDisparo : MonoBehaviour
         {
             orientador = puntoDeDisparo.GetComponent<OrientarPuntoDisparo>();
         }
+
+        // Buscamos el parlante (AudioSource) en el mismo objeto del jugador
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -29,6 +36,14 @@ public class SistemaDisparo : MonoBehaviour
     void EjecutarDisparo()
     {
         if (prefabBala == null) return;
+
+        // ==========================================
+        // REPRODUCIR SONIDO DEL DISPARO
+        // ==========================================
+        if (audioSource != null && sonidoDisparo != null)
+        {
+            audioSource.PlayOneShot(sonidoDisparo);
+        }
 
         // 1. Definimos el origen exacto del disparo
         Vector3 origen = puntoDeDisparo != null ? puntoDeDisparo.position : transform.position;
