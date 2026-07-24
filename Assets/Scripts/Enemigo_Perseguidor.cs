@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class EnemigoPerseguidor : MonoBehaviour
 {
+    [Header("Estadísticas")]
+    [SerializeField] private float vidaMaxima = 50f;
+    private float vidaActual;
+
     [Header("Configuración de Movimiento")]
     [SerializeField] private float velocidadMax = 3.5f;
     [SerializeField] private float fuerzaGiroMax = 5f;
@@ -16,17 +20,29 @@ public class EnemigoPerseguidor : MonoBehaviour
     [SerializeField] private Sprite spriteEspalda;
     [SerializeField] private Sprite spritePerfil; // Mirando a la derecha
 
+    [Header("Efectos de Sonido")]
+    [SerializeField] private AudioClip sonidoAtaque;
+    [SerializeField] private AudioClip sonidoMuerte;
+    private AudioSource audioSource;
+
     private Transform objetivoRehen;
     private Rigidbody2D rb;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
     {
+        vidaActual = vidaMaxima;
         BuscarNuevoObjetivo();
+    }
+
+    private void Update()
+    {
+        CambiarSpriteSegunMovimiento();
     }
 
     private void FixedUpdate()
@@ -63,98 +79,113 @@ public class EnemigoPerseguidor : MonoBehaviour
 
     private Vector2 EvitarObstaculos(Vector2 direccionBase)
     {
-        // Lanzamos un rayo en nuestra dirección actual de movimiento
         RaycastHit2D hit = Physics2D.Raycast(transform.position, direccionBase, longitudSensor, capaObstaculos);
 
         if (hit.collider != null)
         {
-            // Vector Normal: Perpendicular a la superficie del obstáculo chocada
             Vector2 normalObstaculo = hit.normal;
-
-            // PRODUCTO PUNTO: Medimos qué tan "de frente" vamos hacia el obstáculo.
-            // Si da cercano a -1, vamos directo a colisionar de frente.
             float productoPunto = Vector2.Dot(direccionBase, normalObstaculo);
 
-            if (productoPunto < 0) // Significa que nos dirigimos hacia la pared
+            if (productoPunto < 0)
             {
-                // Calculamos una fuerza de desvío empujando al enemigo en la dirección de la Normal
-                // Cuanto más de frente choquemos, más fuerte será el desvío.
                 Vector2 fuerzaDesvio = normalObstaculo * (-productoPunto) * 2f;
-
-                // Retornamos la nueva dirección combinada (Hacia el rehén + Esquivar Obstáculo)
                 return (direccionBase + fuerzaDesvio).normalized;
             }
         }
-
-        // Si no hay peligro inmediato, seguimos el vector original hacia el rehén
         return direccionBase;
     }
 
     private void CambiarSpriteSegunMovimiento()
     {
         Vector2 vel = rb.linearVelocity;
-
-        // Si se mueve muy lento, que mantenga el último sprite puesto
         if (vel.magnitude < 0.1f) return;
 
-        // Comparamos matemáticamente si el movimiento es más vertical o más horizontal
         if (Mathf.Abs(vel.y) > Mathf.Abs(vel.x))
         {
-            // Movimiento principalmente Vertical
-            if (vel.y > 0) spriteRenderer.sprite = spriteEspalda; // Camina hacia arriba
-            else spriteRenderer.sprite = spriteFrente;           // Camina hacia abajo
+            if (vel.y > 0) spriteRenderer.sprite = spriteEspalda;
+            else spriteRenderer.sprite = spriteFrente;
         }
         else
         {
-            // Movimiento principalmente Horizontal
             spriteRenderer.sprite = spritePerfil;
-            spriteRenderer.flipX = (vel.x < 0); // Si va a la izquierda (X negativo), voltea el sprite
+            spriteRenderer.flipX = (vel.x < 0);
         }
     }
 
     private void BuscarNuevoObjetivo()
     {
-        // Buscamos directamente al jugador usando su etiqueta
         GameObject jugadorObj = GameObject.FindGameObjectWithTag("Player");
 
         if (jugadorObj != null && jugadorObj.activeInHierarchy)
         {
-            // Aunque la variable se llame "objetivoRehen", ahora guardará al Jugador
             objetivoRehen = jugadorObj.transform;
         }
         else
         {
-            // Si el jugador muere o es destruido, el enemigo se queda quieto
             objetivoRehen = null;
         }
     }
 
-    // Dibujar los vectores sensores en el editor para depuración visual
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        // Dibuja la línea del sensor frontal según el vector de velocidad actual
         Vector3 dir = rb != null && rb.linearVelocity.magnitude > 0.1f ? (Vector3)rb.linearVelocity.normalized : transform.up;
         Gizmos.DrawLine(transform.position, transform.position + dir * longitudSensor);
     }
 
-    // SI TOCA AL REHÉN O AL PLAYER
+    // ==========================================
+    // SISTEMA DE COLISIONES Y ATAQUE
+    // ==========================================
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Si choca con el jugador, le hace daño usando el script correcto (JugadorTopDown)
         if (collision.gameObject.CompareTag("Player"))
         {
             JugadorTopDown jugador = collision.gameObject.GetComponent<JugadorTopDown>();
-            if (jugador != null) 
+            if (jugador != null)
             {
-                jugador.RecibirDanio(20f); 
+                // Reproducir sonido de ataque
+                if (audioSource != null && sonidoAtaque != null)
+                {
+                    audioSource.PlayOneShot(sonidoAtaque);
+                }
+
+                jugador.RecibirDanio(20f);
             }
         }
-        // Si choca contra un rehén
         else if (collision.gameObject.CompareTag("Rehen"))
         {
             Debug.Log("¡Un enemigo atrapó a un rehén!");
-            // Aquí puedes destruir al rehén o restarlo si quieres
         }
+    }
+
+    // ==========================================
+    // SISTEMA DE VIDA Y MUERTE
+    // ==========================================
+    public void RecibirDanio(float daño)
+    {
+        vidaActual -= daño;
+
+        if (vidaActual <= 0)
+        {
+            Morir();
+        }
+    }
+
+    private void Morir()
+    {
+        // 1. Reproducir sonido de muerte usando un parlante temporal (así no se corta al destruir el objeto)
+        if (sonidoMuerte != null)
+        {
+            AudioSource.PlayClipAtPoint(sonidoMuerte, transform.position);
+        }
+
+        // 2. Le avisamos al GameManager que reste un enemigo (usando el método que ya tienes)
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.EliminarEnemigo();
+        }
+
+        // 3. Destruimos al enemigo
+        Destroy(gameObject);
     }
 }
