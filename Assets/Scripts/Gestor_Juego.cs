@@ -75,6 +75,11 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f; // Descongela el juego y arranca la acción
     }
 
+    public void Creditos()
+        {
+        SceneManager.LoadScene("Creditos");
+    }
+
     public void Nivel02()
     {
         SceneManager.LoadScene("Nivel-02");
