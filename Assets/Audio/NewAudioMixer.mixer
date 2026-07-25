@@ -6,7 +6,7 @@ AudioMixerGroupController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FX vol
+  m_Name: VolFX
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: d96a632e04487304eb5194c290b55813
   m_Children: []
@@ -35,10 +35,10 @@ AudioMixerController:
   m_EnableSuspend: 1
   m_UpdateMode: 0
   m_ExposedParameters:
-  - guid: 5c0e60e4669229c47b6e5c9444eb9f02
-    name: MyExposedParam 1
   - guid: e0ea2171aec0337489c678c21f5099b5
-    name: MyExposedParam
+    name: Master
+  - guid: 5c0e60e4669229c47b6e5c9444eb9f02
+    name: VolFX
   m_AudioMixerGroupViews:
   - guids:
     - ca4847dfe31b7384ea4cfc5ae28d4617
