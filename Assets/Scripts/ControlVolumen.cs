@@ -9,7 +9,6 @@ public class ControlVolumen : MonoBehaviour
     public Slider FXvolumen;
     public Toggle mute;
     public AudioMixer mixer;
-    public AudioSource fxSource;
     public AudioClip clickSound;
     private float lastVolume;
     private void Awake()
@@ -46,26 +45,15 @@ public class ControlVolumen : MonoBehaviour
     {
         if (mute.isOn)
         {
-            // Le quitamos el "float" extra para que use la variable de arriba
             mixer.GetFloat("Master", out lastVolume);
             mixer.SetFloat("Master", -80f);
-
-            // Guardamos que el juego está muteado
             PlayerPrefs.SetInt("MuteGuardado", 1);
         }
         else
         {
-            // Al desmutear, usamos el valor donde esté el slider
             mixer.SetFloat("Master", volumen.value);
-
-            // Guardamos que el juego ya no está muteado
             PlayerPrefs.SetInt("MuteGuardado", 0);
         }
-    }
-
-    public void OpenPanel(GameObject panel)
-    {
-        PlaySoundButton();
     }
 
     public void ChangeVolumenMaster(float v)
@@ -86,9 +74,5 @@ public class ControlVolumen : MonoBehaviour
 
         // Guardamos en la memoria
         PlayerPrefs.SetFloat("VolFXGuardado", v);
-    }
-    public void PlaySoundButton()
-    {
-        fxSource.PlayOneShot(clickSound);
     }
 }
