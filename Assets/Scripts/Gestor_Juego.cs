@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
     [Header("Paneles de Estado (UI)")]
     [SerializeField] private GameObject panelVictoria;
     [SerializeField] private GameObject panelDerrota;
-    [SerializeField] private GameObject panelInicio; // NUEVO: Panel de historia/instrucciones
+    [SerializeField] private GameObject panelInicio; // Panel de historia/instrucciones
     [SerializeField] private GameObject panelPausa;
 
     private bool juegoTerminado = false;
@@ -76,7 +76,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void Creditos()
-        {
+    {
         SceneManager.LoadScene("Creditos");
     }
 
@@ -132,7 +132,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Llama a esto desde el script de tus enemigos cuando mueran
     public void EliminarEnemigo()
     {
         if (juegoTerminado) return;
@@ -141,7 +140,6 @@ public class GameManager : MonoBehaviour
         VerificarCondicionesVictoria();
     }
 
-    // Llama a esto desde el script de las personas cuando las salves
     public void SalvarPersona()
     {
         if (juegoTerminado) return;
@@ -188,16 +186,13 @@ public class GameManager : MonoBehaviour
         Debug.Log("¡Perdiste!");
     }
 
-    // Función útil para conectar a un botón de "Reintentar" en tu panel de derrota/victoria
     public void ReiniciarNivel()
     {
         Time.timeScale = 1f; // MUY IMPORTANTE restablecer el tiempo antes de recargar
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    // ====================================================================
-    // FUNCIÓN EXTRA: Permite al Generador de Enemigos leer la cantidad
-    // ====================================================================
+ 
     public int GetEnemigosTotales()
     {
         return enemigosTotales;
