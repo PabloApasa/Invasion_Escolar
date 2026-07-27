@@ -30,4 +30,10 @@ public class PausarJuego : MonoBehaviour
         Time.timeScale = 0;
         juegoPausado = true;
     }
+
+    public void VolverMenu()
+        {
+        Time.timeScale = 1;
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
+    }
 }
