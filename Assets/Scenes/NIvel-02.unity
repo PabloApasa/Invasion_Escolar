@@ -2765,7 +2765,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1063547369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3720,10 +3720,14 @@ PrefabInstance:
     - target: {fileID: 4300915936448977928, guid: 32287326ab2c3c541b6cf27de1040bd5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1615120832}
+      objectReference: {fileID: 432980161}
     - target: {fileID: 4300915936448977928, guid: 32287326ab2c3c541b6cf27de1040bd5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: VolverMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 4300915936448977928, guid: 32287326ab2c3c541b6cf27de1040bd5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PausarJuego, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5461258350849711061, guid: 32287326ab2c3c541b6cf27de1040bd5, type: 3}
       propertyPath: m_AnchorMax.x
@@ -3732,6 +3736,22 @@ PrefabInstance:
     - target: {fileID: 5461258350849711061, guid: 32287326ab2c3c541b6cf27de1040bd5, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6087703933231871254, guid: 32287326ab2c3c541b6cf27de1040bd5, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6087703933231871254, guid: 32287326ab2c3c541b6cf27de1040bd5, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1615120834}
+    - target: {fileID: 6087703933231871254, guid: 32287326ab2c3c541b6cf27de1040bd5, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ChangeVolumenFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 6087703933231871254, guid: 32287326ab2c3c541b6cf27de1040bd5, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ControlVolumen, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6987442173729602958, guid: 32287326ab2c3c541b6cf27de1040bd5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -3768,6 +3788,46 @@ PrefabInstance:
     - target: {fileID: 7390873125276724112, guid: 32287326ab2c3c541b6cf27de1040bd5, type: 3}
       propertyPath: m_AnchorMin.x
       value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7594228924691918639, guid: 32287326ab2c3c541b6cf27de1040bd5, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1615120834}
+    - target: {fileID: 7594228924691918639, guid: 32287326ab2c3c541b6cf27de1040bd5, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ChangeVolumenMaster
+      objectReference: {fileID: 0}
+    - target: {fileID: 7594228924691918639, guid: 32287326ab2c3c541b6cf27de1040bd5, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ControlVolumen, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7636237305978304262, guid: 32287326ab2c3c541b6cf27de1040bd5, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7636237305978304262, guid: 32287326ab2c3c541b6cf27de1040bd5, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7636237305978304262, guid: 32287326ab2c3c541b6cf27de1040bd5, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1615120834}
+    - target: {fileID: 7636237305978304262, guid: 32287326ab2c3c541b6cf27de1040bd5, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7636237305978304262, guid: 32287326ab2c3c541b6cf27de1040bd5, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetMute
+      objectReference: {fileID: 0}
+    - target: {fileID: 7636237305978304262, guid: 32287326ab2c3c541b6cf27de1040bd5, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ControlVolumen, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7636237305978304262, guid: 32287326ab2c3c541b6cf27de1040bd5, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 7997983540810616047, guid: 32287326ab2c3c541b6cf27de1040bd5, type: 3}
       propertyPath: m_Pivot.x
@@ -4204,7 +4264,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -386.2, y: 193.2}
+  m_AnchoredPosition: {x: 128, y: 127.57}
   m_SizeDelta: {x: 96.1174, y: 90.0927}
   m_Pivot: {x: 0.49999982, y: 0.49999952}
 --- !u!114 &1960064237
